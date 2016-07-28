@@ -13,3 +13,9 @@ iface wlan1 inet static
 
 ## Linking `dhcpd/ifupdown.sh`
 
+This script expects to be called from the *post-up* mode of the interface bringup. This means the script should be linked from the `/etc/network/if-up.d` directory to ensure any other configuration of the interface is done before the DHCP service is started. Link the script (in this case it is installed into `/etc/dhcpd/ifupdown.sh` using the following:
+
+```
+$ /etc/network/if-up.d
+$ ln -s ../../ifupdown.sh dhcpd
+```
