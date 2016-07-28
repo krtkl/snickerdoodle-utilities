@@ -1,4 +1,4 @@
-# HOSTAP Server Configuration Utility
+# HOSTAPD Configuration Utility
 
 This network configuration utility only requires a single specification to enable a network interface to be configured for access point mode (AP) using `hostapd`. Specify the configuration file to use with the server using a `hostapd-conf` stanza in the network interface file:
 
