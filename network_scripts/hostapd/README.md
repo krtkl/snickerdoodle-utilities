@@ -23,3 +23,30 @@ $ ln -s ../../ifupdown.sh hostapd
 $ cd /etc/network/if-post-down.d
 $ ln -s ../../ifupdown.sh hostapd
 ```
+
+The resulting structure of the `/etc/network` directory should look something like the following:
+
+```
+$ tree /etc/network
+/etc/network
+├── if-down.d
+│   ├── resolvconf
+│   └── upstart
+├── if-post-down.d
+│   └── hostapd -> ../../hostapd/ifupdown.sh
+├── if-pre-up.d
+│   └── hostapd -> ../../hostapd/ifupdown.sh
+├── if-up.d
+│   ├── 000resolvconf
+│   ├── dhcpd -> ../../dhcpd/ifupdown.sh
+│   ├── hostapd -> ../../hostapd/ifupdown.sh
+│   ├── ntpdate
+│   ├── openssh-server
+│   ├── upstart
+│   └── wpa_supplicant -> ../../wpa_supplicant/ifupdown.sh
+├── interfaces
+├── interfaces.d
+│   ├── wlan0
+│   └── wlan1
+└── run -> /run/network
+```
