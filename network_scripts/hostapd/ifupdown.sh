@@ -78,6 +78,16 @@ test_hostapd_pidfile () {
         fi
 }
 
+init_interface() {
+
+        echo 1 > /proc/sys/net/ipv4/ip_forward
+
+        # Check if the interface exists and, if not, create it
+        if [ ! -d /sys/class/net/$IFACE ]; then
+                iw phy `ls /sys/class/ieee80211/` interface add $IFACE type managed
+        fi
+}
+
 init_hostapd () {
         HOSTAPD_OPTIONS="-B -P $HOSTAPD_PIDFILE $HOSTAPD_CONF"
         HOSTAPD_MESSAGE="$HOSTAPD_BIN $HOSTAPD_OPTIONS"
@@ -120,11 +130,19 @@ kill_hostapd () {
                 --pidfile "$HOSTAPD_PIDFILE" > "$TO_NULL"
 
         [ "$HOSTAPD_OMIT_PIDFILE" ] && rm -f "$HOSTAPD_OMIT_PIDFILE"
+        
+        # Remove the network interface, if needed
+        if [ -d /sys/class/net/$IFACE ]; then
+                iw dev $IFACE del
+        fi
 }
 
 case "$MODE" in
         start)
                 case "$PHASE" in
+                        pre-up)
+                                init_interface || exit 1
+                                ;;
                         post-up)
                                 init_hostapd || exit 1
                                 ;;
