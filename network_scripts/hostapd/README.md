@@ -13,9 +13,13 @@ iface wlan1 inet static
 
 ## Linking `hostapd/ifupdown.sh`
 
-This script expects to be called from the *post-up* mode of the interface bringup. This means the script should be linked from the `/etc/network/if-up.d` directory to ensure any other configuration of the interface is done before the access point is started. Link the script (in this case it is installed into `/etc/hostapd/ifupdown.sh` using the following:
+This script expects to be called from the *pre-up*, *post-up* and *post-down* modes of the interface bringup/down. This means the script should be linked from the `/etc/network/if-pre-up.d`, `/etc/network/if-up.d` and `/etc/network/if-post-down.d` directories to ensure any other configuration of the interface is done before the access point is started and after the access point is stopped. Link the script (in this case it is installed into `/etc/hostapd/ifupdown.sh` using the following:
 
 ```
-$ /etc/network/if-up.d
+$ cd /etc/network/if-pre-up.d
+$ ln -s ../../ifupdown.sh hostapd
+$ cd /etc/network/if-up.d
+$ ln -s ../../ifupdown.sh hostapd
+$ cd /etc/network/if-post-down.d
 $ ln -s ../../ifupdown.sh hostapd
 ```
